@@ -46,6 +46,78 @@ namespace Ass1_EncryptSoftware
            // fsDecrypted.Flush();
             fsDecrypted.Close();
         }
+
+        public void DeRSA(byte[] input, string opath, string key, int mode)
+        {
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            rsa.FromXmlString(key);
+
+
+            byte[] decrypted = rsa.Decrypt(input, false);
+            string stringToWrite = Encoding.GetEncoding(1252).GetString(decrypted);
+            string trimOutput = stringToWrite.Remove(0, 20);
+
+            StreamWriter fsDecrypted = new StreamWriter(this.opath);
+            fsDecrypted.Write(trimOutput);
+            fsDecrypted.Close();
+        }
+
+        public void DeAES(byte[] input, string opath, string key, int mode)
+        {
+            SHA256 sha256 = SHA256.Create();
+            AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
+            aes.Key = sha256.ComputeHash(ASCIIEncoding.ASCII.GetBytes(key));
+            System.Buffer.BlockCopy(aes.Key, 0, aes.IV, 0, aes.Key.Length / 2);
+
+            if (mode == 48)
+                aes.Mode = CipherMode.ECB;
+            else if (mode == 49)
+                aes.Mode = CipherMode.CBC;
+            else
+                if (mode == 50) aes.Mode = CipherMode.CFB;
+
+            MemoryStream fsread = new MemoryStream(input);
+
+            ICryptoTransform AesDecrypt = aes.CreateDecryptor();
+            CryptoStream Crypto = new CryptoStream(fsread, AesDecrypt, CryptoStreamMode.Read);
+
+            StreamWriter fsDecrypted = new StreamWriter(this.opath);
+            string stringToWrite = new StreamReader(Crypto, Encoding.GetEncoding(1252)).ReadToEnd();
+            string trimOutput = stringToWrite.Remove(0, 20);
+            fsDecrypted.Write(trimOutput);
+            fsDecrypted.Close();
+        }
+
+        public void DeBlow(byte[] input, string opath, string key, int mode)
+        {
+            SHA256 sha256 = SHA256.Create();
+            BlowFish blowFish = new BlowFish(sha256.ComputeHash(ASCIIEncoding.ASCII.GetBytes(key)));
+            blowFish.SetIV(Crc64.Compute(ASCIIEncoding.ASCII.GetBytes(key)));
+
+            byte[] decrypted = { };
+            string cfbDecrypted;
+            if (mode == 48)
+                decrypted = blowFish.Decrypt_ECB(input);
+            else if (mode == 49)
+                decrypted = blowFish.Decrypt_CBC(input);
+            else
+                if (mode == 50)
+                decrypted = blowFish.Decrypt_CBC(input);
+
+
+            string stringToWrite = Encoding.GetEncoding(1252).GetString(decrypted);
+            string trimOutput = stringToWrite.Remove(0, 20);
+            int pos = trimOutput.IndexOf('\0');
+            if (pos > 0 )
+                trimOutput = trimOutput.Substring(0, pos);
+
+            StreamWriter fsDecrypted = new StreamWriter(this.opath);
+            fsDecrypted.Write(trimOutput);
+            fsDecrypted.Close();
+
+
+        }
+
         public void desfile()
         {
             FileStream fInput = new FileStream(this.fpath, FileMode.Open, FileAccess.Read);
@@ -64,6 +136,16 @@ namespace Ass1_EncryptSoftware
                 case 68:
                     DeDES(encrypted,this.opath, this.key, mode);
                     break;
+                case 82:
+                    DeRSA(encrypted, this.opath, this.key, mode);
+                    break;
+                case 65:
+                    DeAES(encrypted, this.opath, this.key, mode);
+                    break;
+                case 66:
+                    DeBlow(encrypted, this.opath, this.key, mode);
+                    break;
+
             }
             
             

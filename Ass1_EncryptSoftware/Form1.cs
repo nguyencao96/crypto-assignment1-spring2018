@@ -255,6 +255,11 @@ namespace Ass1_EncryptSoftware
         private void button8_Click(object sender, EventArgs e)
         {
             // generacode here
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            string privatekey = rsa.ToXmlString(true);
+            string publickey = rsa.ToXmlString(false);
+            File.WriteAllText(label27.Text + @"\PrivateKey.xml", privatekey);
+            File.WriteAllText(label27.Text + @"\PublicKey.xml", publickey);
         }
         #endregion
 
@@ -274,6 +279,14 @@ namespace Ass1_EncryptSoftware
                 ProgressBar bar = new ProgressBar();
                 bar.Init(dfList.Count);
                 bar.Show();
+
+                foreach (FileInfo file in dfList)
+                {
+                    filepath = @file.ToString();
+                    outpath = @file.ToString().Remove(@file.ToString().Length - 4);
+                    DecryptAccess.Init(filepath, key, outpath);
+                    DecryptAccess.desfile();
+                }
                 #region DES
 
                 foreach (FileInfo file in dfList)
@@ -1085,7 +1098,6 @@ namespace Ass1_EncryptSoftware
             File.WriteAllText(label27.Text + @"\PrivateKey.xml", privatekey);
             File.WriteAllText(label27.Text + @"\PublicKey.xml", publickey);
         }
-
 
         private void Blowpanel_MouseEnter(object sender, EventArgs e)
         {

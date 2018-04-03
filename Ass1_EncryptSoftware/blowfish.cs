@@ -216,7 +216,7 @@ namespace Ass1_EncryptSoftware
         {
             if (!IVSet)
                 SetRandomIV();
-            return ByteToHex(InitVector) + ByteToHex(Crypt_CFB(Encoding.ASCII.GetBytes(pt), 2));
+            return ByteToHex(InitVector) + ByteToHex(Crypt_CFB(Encoding.GetEncoding(1252).GetBytes(pt), 2));
         }
 
         /// <summary>
