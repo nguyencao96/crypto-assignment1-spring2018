@@ -29,7 +29,6 @@ namespace Ass1_EncryptSoftware
         public void EnDES()
         {
             //Prepare File
-            FileStream fsInput = new FileStream(fpath, FileMode.Open, FileAccess.Read);
             FileStream fsEncrypted = new FileStream(opath, FileMode.Create, FileAccess.Write);
             //Create Cryptor
             DESCryptoServiceProvider DES = new DESCryptoServiceProvider();
@@ -55,21 +54,17 @@ namespace Ass1_EncryptSoftware
             ICryptoTransform DesEncrypt = DES.CreateEncryptor();
             CryptoStream Crypto = new CryptoStream(fsEncrypted, DesEncrypt, CryptoStreamMode.Write);
 
-            byte[] ByteArrayinput = new byte[fsInput.Length];
-            fsInput.Read(ByteArrayinput, 0, ByteArrayinput.Length);
+            byte[] ByteArrayinput = File.ReadAllBytes(fpath);
             byte[] Hashdata = sha1.ComputeHash(ByteArrayinput);
 
             byte[] Final = new byte[Hashdata.Length + ByteArrayinput.Length];
             
-            System.Diagnostics.Debug.WriteLine("Write hashdata from " + 0 + " to " + Hashdata.Length + " out of " + Final.Length);
             System.Buffer.BlockCopy(Hashdata, 0, Final, 0, Hashdata.Length);
-            System.Diagnostics.Debug.WriteLine("Write inputdata from " + Hashdata.Length + " to " + ByteArrayinput.Length + " out of " + Final.Length);
             System.Buffer.BlockCopy(ByteArrayinput, 0, Final, Hashdata.Length, ByteArrayinput.Length);
             //string mergeString = Encoding.GetEncoding(1252).GetString(Final);
             Crypto.Write(Final, 0, Final.Length);
             Crypto.Close();
 
-            fsInput.Close();
             fsEncrypted.Close();
 
             StreamWriter sw = File.AppendText(this.opath);
@@ -79,7 +74,6 @@ namespace Ass1_EncryptSoftware
         }
         public void EnAES()
         {
-            FileStream fInput = new FileStream(this.fpath, FileMode.Open, FileAccess.Read);
             FileStream fOutput = new FileStream(this.opath, FileMode.Create, FileAccess.Write);
 
             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
@@ -103,8 +97,7 @@ namespace Ass1_EncryptSoftware
 
             }
 
-            byte[] arrayinput = new byte[fInput.Length];
-            fInput.Read(arrayinput, 0, arrayinput.Length);
+            byte[] arrayinput = File.ReadAllBytes(fpath);
 
             SHA1 sha1 = SHA1.Create();
             byte[] Hashdata = sha1.ComputeHash(arrayinput);
@@ -118,7 +111,6 @@ namespace Ass1_EncryptSoftware
             cstream.Write(Final, 0, Final.Length);
             cstream.Close();
 
-            fInput.Close();
             fOutput.Close();
 
             StreamWriter sw = File.AppendText(this.opath);
@@ -127,11 +119,9 @@ namespace Ass1_EncryptSoftware
             sw.Close();
         }
        
-        public void EnRSA()
+        public void EnRSA(string keypath)
         {
-            FileStream fInput = new FileStream(this.fpath, FileMode.Open, FileAccess.Read);
-            byte[] arrayinput = new byte[fInput.Length];
-            fInput.Read(arrayinput, 0, arrayinput.Length);
+            byte[] arrayinput = File.ReadAllBytes(fpath);
 
             SHA1 sha1 = SHA1.Create();
             byte[] Hashdata = sha1.ComputeHash(arrayinput);
@@ -141,7 +131,7 @@ namespace Ass1_EncryptSoftware
 
 
             RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            rsa.FromXmlString(File.ReadAllText(this.key));
+            rsa.FromXmlString(File.ReadAllText(keypath));
             RSAParameters rsaparam = rsa.ExportParameters(false);
             //RSACryptoServiceProvider mylocal = new RSACryptoServiceProvider();
             //mylocal.ImportParameters(rsaparam);
@@ -151,7 +141,6 @@ namespace Ass1_EncryptSoftware
             FileStream fOutput = new FileStream(this.opath, FileMode.Create, FileAccess.Write);
             fOutput.Write(arrayenc, 0, arrayenc.Length);
 
-            fInput.Close();
             fOutput.Close();
 
             StreamWriter sw = File.AppendText(this.opath);
@@ -162,10 +151,8 @@ namespace Ass1_EncryptSoftware
         public void EnBlowFish()
         {
             //Read Input file
-            FileStream fInput = new FileStream(this.fpath, FileMode.Open, FileAccess.Read);
-            //FileStream fOutput = new FileStream(this.opath, FileMode.Create, FileAccess.Write);
-            byte[] arrayinput = new byte[fInput.Length];
-            fInput.Read(arrayinput, 0, arrayinput.Length);
+            byte[] arrayinput = File.ReadAllBytes(fpath);
+           
             //Hash Plaintext
             SHA1 sha1 = SHA1.Create();
             byte[] Hashdata = sha1.ComputeHash(arrayinput);
@@ -191,7 +178,6 @@ namespace Ass1_EncryptSoftware
             FileStream fOutput = new FileStream(this.opath, FileMode.Create, FileAccess.Write);
             fOutput.Write(arrayenc, 0, arrayenc.Length);
 
-            fInput.Close();
             fOutput.Close();
 
             StreamWriter sw = File.AppendText(this.opath);
@@ -199,6 +185,5 @@ namespace Ass1_EncryptSoftware
             sw.Write(this.mode);
             sw.Close();
         }
-        public void EnLOKI(int ciphermode) { }
     }
 }

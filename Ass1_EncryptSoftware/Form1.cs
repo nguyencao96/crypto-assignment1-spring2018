@@ -132,81 +132,57 @@ namespace Ass1_EncryptSoftware
         }
         private void EnEncryptButton_Click(object sender, EventArgs e)
         {
-            
-                string filepath;
-                string outpath;
-                string key = EnPasstext.Text;
 
-                int cmode = 1;
-                if (EnECBCheck.Checked == true)
-                    cmode = 0;
-                else if (EnCBCCheck.Checked == true)
-                    cmode = 1;
-                else if (EnCFBcheck.Checked == true)
-                    cmode = 2;
+            string filepath, outpath, parentpath, filename;
+            string key = EnPasstext.Text;
 
-                Encrypt EncryptAccess = new Encrypt();
+            int cmode = 1;
+            if (EnECBCheck.Checked == true)
+                cmode = 0;
+            else if (EnCBCCheck.Checked == true)
+                cmode = 1;
+            else if (EnCFBcheck.Checked == true)
+                cmode = 2;
+
+            Encrypt EncryptAccess = new Encrypt();
 
 
-                if (fList.Count != 0)
+            if (fList.Count != 0)
+            {
+                ProgressBar bar = new ProgressBar();
+                bar.Init(fList.Count);
+                bar.Show();
+                foreach (FileInfo file in fList)
                 {
-                    ProgressBar bar = new ProgressBar();
-                    bar.Init(fList.Count);
-                    bar.Show();
-                    #region DES
-                    if (des == true)
-                        foreach (FileInfo file in fList)
-                        {
-                            filepath = @file.ToString();
-                            outpath = @file.ToString() + ".txt";
-                            EncryptAccess.Init(filepath, key, cmode, outpath);
+                    filepath = @file.ToString();
+                    if (filepath.Contains(".encrypted.txt"))
+                    {
+                        bar.encryptCompleted(filepath);
+                        continue;
+                    }
+                    outpath = @file.ToString() + ".encrypted.txt";
+                    //parentpath = Path.GetDirectoryName(filepath) + "\\encrypted\\";
+                    //Directory.CreateDirectory(parentpath);
+                    //filename = Path.GetFileName(filepath);
+                    //outpath = parentpath + filename + ".txt";
+                    EncryptAccess.Init(filepath, key, cmode, outpath);
+                    try
+                    {
+                        if (des)
                             EncryptAccess.EnDES();
-                            bar.encryptCompleted(filepath);
-                    }
-                #endregion
-                #region AES
-                else if (aes == true)
-                        foreach (FileInfo file in fList)
-                        {
-                            filepath = @file.ToString();
-                            outpath = @file.ToString() + ".txt";
-                            EncryptAccess.Init(filepath, key, cmode, outpath);
+                        if (aes)
                             EncryptAccess.EnAES();
-                            bar.encryptCompleted(filepath);
-                    }
-                    #endregion
-                    #region Blowfish
-                    else if (blow == true)
-                        foreach (FileInfo file in fList)
-                        {
-                            filepath = @file.ToString();
-                            outpath = @file.ToString() + ".txt";
-                            EncryptAccess.Init(filepath, key, cmode, outpath);
+                        if (blow)
                             EncryptAccess.EnBlowFish();
-                            bar.encryptCompleted(filepath);
-                        }
-                    #endregion
-                    #region RSA
-                    else if (rsa == true)
-
-                        foreach (FileInfo file in fList)
-                        {
-                            key = label23.Text;
-                            filepath = @file.ToString();
-                            outpath = @file.ToString() + ".txt";
-                            EncryptAccess.Init(filepath, key, cmode, outpath);
-                            EncryptAccess.EnRSA();
-                            bar.encryptCompleted(filepath);
-                        }
-                    #endregion
-
-                    else if (loki == true) ;
+                        if (rsa)
+                            EncryptAccess.EnRSA(label23.Text);
+                        bar.encryptCompleted(filepath);
+                    }
+                    catch (Exception err) { bar.errorProcessing(@file.ToString(), err.Message); }
                 }
-                else
-                {
-                    MessageBox.Show("Please select file or folder to encrypt!.");
-                }
-            
+            }
+            else
+                MessageBox.Show("Please select file or folder to encrypt!.");
         }
         private void button6_Click(object sender, EventArgs e)
         {
@@ -267,8 +243,8 @@ namespace Ass1_EncryptSoftware
         private void DecryptBtn_Click(object sender, EventArgs e)
         {
 
-            string filepath;
-            string outpath;
+            string filepath, outpath, extension;
+
             string key = DePassText.Text;
 
             Decrypt DecryptAccess = new Decrypt();
@@ -283,56 +259,21 @@ namespace Ass1_EncryptSoftware
                 foreach (FileInfo file in dfList)
                 {
                     filepath = @file.ToString();
-                    outpath = @file.ToString().Remove(@file.ToString().Length - 4);
-                    DecryptAccess.Init(filepath, key, outpath);
-                    DecryptAccess.desfile();
-                }
-                #region DES
-
-                foreach (FileInfo file in dfList)
-                {
-                    filepath = @file.ToString();
-                    outpath = @file.ToString() + ".txt";
+                    outpath = filepath.Substring(0, filepath.LastIndexOf('.')); //Trim txt
+                    if (Path.GetExtension(outpath) != ".encrypted")//Verified wheter encrypted file
+                    {
+                        bar.decryptCompleted(filepath);
+                        continue;
+                    }
+                    outpath = filepath.Substring(0, outpath.LastIndexOf('.')); //Trim encrypted
+                    extension = Path.GetExtension(outpath);
+                    outpath = Path.ChangeExtension(outpath, "decrypted" + extension);
                     DecryptAccess.Init(filepath, key, outpath);
                     DecryptAccess.desfile();
                     bar.decryptCompleted(filepath);
                 }
-                #endregion
-                /*
-            #region AES
-            else if (aes == true)
-                foreach (FileInfo file in fList)
-                {
-                    filepath = @file.ToString();
-                    outpath = @file.ToString() + ".txt";
-                    EncryptAccess.Init(filepath, key, cmode, outpath);
-                    EncryptAccess.EnAES();
-                }
-            #endregion
-            #region Blowfish
-            else if (blow == true)
-                foreach (FileInfo file in fList)
-                {
-                    filepath = @file.ToString();
-                    outpath = @file.ToString() + ".txt";
-                    EncryptAccess.Init(filepath, key, cmode, outpath);
-                    EncryptAccess.EnBlowFish();
-                }
-            #endregion
-            #region RSA
-            else if (rsa == true)
+                
 
-                foreach (FileInfo file in fList)
-                {
-                    key = label23.Text;
-                    filepath = @file.ToString();
-                    outpath = @file.ToString() + ".txt";
-                    EncryptAccess.Init(filepath, key, cmode, outpath);
-                    EncryptAccess.EnRSA();
-                }
-            #endregion
-
-            else if (loki == true) ;*/
             }
             else
             {

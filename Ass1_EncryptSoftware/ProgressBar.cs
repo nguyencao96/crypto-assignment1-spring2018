@@ -59,6 +59,20 @@ namespace Ass1_EncryptSoftware
             }
         }
 
+        public void errorProcessing(string filepath, string err)
+        {
+            textBox1.AppendText("Not available" + Environment.NewLine);
+            textBox1.AppendText(filepath + Environment.NewLine);
+            progressBar1.Increment(1);
+            this.Refresh();
+            Tick++;
+            label1.Text = ((float)Tick * 100 / (float)ListCount).ToString() + "%";
+            if (progressBar1.Value == progressBar1.Maximum)
+            {
+                MessageBox.Show("Error: " + err);
+                this.Close();
+            }
+        }
         #region "MoveForm"
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
