@@ -57,11 +57,15 @@ namespace Ass1_EncryptSoftware
             this.Line1 = new System.Windows.Forms.Panel();
             this.Modules = new System.Windows.Forms.Label();
             this.c = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.Slidebar1button = new System.Windows.Forms.Button();
             this.Blowpanel = new System.Windows.Forms.Panel();
             this.BlowText = new System.Windows.Forms.Label();
             this.AESpanel = new System.Windows.Forms.Panel();
             this.AesText = new System.Windows.Forms.Label();
+            this.LOKIpanel = new System.Windows.Forms.Panel();
+            this.LokiText = new System.Windows.Forms.Label();
             this.RSApanel = new System.Windows.Forms.Panel();
             this.RsaText = new System.Windows.Forms.Label();
             this.DESpanel = new System.Windows.Forms.Panel();
@@ -170,10 +174,6 @@ namespace Ass1_EncryptSoftware
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.LokiText = new System.Windows.Forms.Label();
-            this.LOKIpanel = new System.Windows.Forms.Panel();
             this.MainBar.SuspendLayout();
             this.StegButton.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StegIcon)).BeginInit();
@@ -191,8 +191,10 @@ namespace Ass1_EncryptSoftware
             ((System.ComponentModel.ISupportInitialize)(this.EncryptIcon)).BeginInit();
             this.Line1.SuspendLayout();
             this.c.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.Blowpanel.SuspendLayout();
             this.AESpanel.SuspendLayout();
+            this.LOKIpanel.SuspendLayout();
             this.RSApanel.SuspendLayout();
             this.DESpanel.SuspendLayout();
             this.Line3.SuspendLayout();
@@ -214,8 +216,6 @@ namespace Ass1_EncryptSoftware
             this.DecryptPage.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.LOKIpanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainBar
@@ -570,6 +570,27 @@ namespace Ass1_EncryptSoftware
             this.c.Size = new System.Drawing.Size(199, 354);
             this.c.TabIndex = 1;
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(51)))), ((int)(((byte)(61)))));
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Location = new System.Drawing.Point(0, 171);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(200, 25);
+            this.panel1.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.LightGray;
+            this.label1.Location = new System.Drawing.Point(9, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(132, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Asymmetric Encrypt";
+            // 
             // Slidebar1button
             // 
             this.Slidebar1button.BackColor = System.Drawing.Color.Transparent;
@@ -640,6 +661,32 @@ namespace Ass1_EncryptSoftware
             this.AesText.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AESpanel_MouseClick);
             this.AesText.MouseEnter += new System.EventHandler(this.AESpanel_MouseEnter);
             this.AesText.MouseLeave += new System.EventHandler(this.AESpanel_MouseLeave);
+            // 
+            // LOKIpanel
+            // 
+            this.LOKIpanel.BackColor = System.Drawing.Color.Transparent;
+            this.LOKIpanel.Controls.Add(this.LokiText);
+            this.LOKIpanel.Location = new System.Drawing.Point(1, 250);
+            this.LOKIpanel.Name = "LOKIpanel";
+            this.LOKIpanel.Size = new System.Drawing.Size(198, 44);
+            this.LOKIpanel.TabIndex = 4;
+            this.LOKIpanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LOKIpanel_MouseClick);
+            this.LOKIpanel.MouseEnter += new System.EventHandler(this.LOKIpanel_MouseEnter);
+            this.LOKIpanel.MouseLeave += new System.EventHandler(this.LOKIpanel_MouseLeave);
+            // 
+            // LokiText
+            // 
+            this.LokiText.AutoSize = true;
+            this.LokiText.BackColor = System.Drawing.Color.Transparent;
+            this.LokiText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LokiText.ForeColor = System.Drawing.Color.White;
+            this.LokiText.Location = new System.Drawing.Point(9, 14);
+            this.LokiText.Name = "LokiText";
+            this.LokiText.Size = new System.Drawing.Size(0, 18);
+            this.LokiText.TabIndex = 1;
+            this.LokiText.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LOKIpanel_MouseClick);
+            this.LokiText.MouseEnter += new System.EventHandler(this.LOKIpanel_MouseEnter);
+            this.LokiText.MouseLeave += new System.EventHandler(this.LOKIpanel_MouseLeave);
             // 
             // RSApanel
             // 
@@ -1877,7 +1924,6 @@ namespace Ass1_EncryptSoftware
             this.DePassText.Location = new System.Drawing.Point(149, 97);
             this.DePassText.Name = "DePassText";
             this.DePassText.PasswordChar = '*';
-            this.DePassText.ReadOnly = true;
             this.DePassText.Size = new System.Drawing.Size(230, 23);
             this.DePassText.TabIndex = 20;
             this.DePassText.Text = "Enter password";
@@ -2073,55 +2119,6 @@ namespace Ass1_EncryptSoftware
             this.label4.Text = "Decryption";
             this.label4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.LightGray;
-            this.label1.Location = new System.Drawing.Point(9, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Asymmetric Encrypt";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(51)))), ((int)(((byte)(61)))));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(0, 171);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 25);
-            this.panel1.TabIndex = 6;
-            // 
-            // LokiText
-            // 
-            //this.LokiText.ava
-            this.LokiText.AutoSize = true;
-            this.LokiText.BackColor = System.Drawing.Color.Transparent;
-            this.LokiText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LokiText.ForeColor = System.Drawing.Color.White;
-            this.LokiText.Location = new System.Drawing.Point(9, 14);
-            this.LokiText.Name = "LokiText";
-            this.LokiText.Size = new System.Drawing.Size(51, 18);
-            this.LokiText.TabIndex = 1;
-            this.LokiText.Text = "";
-            this.LokiText.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LOKIpanel_MouseClick);
-            this.LokiText.MouseEnter += new System.EventHandler(this.LOKIpanel_MouseEnter);
-            this.LokiText.MouseLeave += new System.EventHandler(this.LOKIpanel_MouseLeave);
-            // 
-            // LOKIpanel
-            // 
-            this.LOKIpanel.BackColor = System.Drawing.Color.Transparent;
-            this.LOKIpanel.Controls.Add(this.LokiText);
-            this.LOKIpanel.Location = new System.Drawing.Point(1, 250);
-            this.LOKIpanel.Name = "LOKIpanel";
-            this.LOKIpanel.Size = new System.Drawing.Size(198, 44);
-            this.LOKIpanel.TabIndex = 4;
-            this.LOKIpanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LOKIpanel_MouseClick);
-            this.LOKIpanel.MouseEnter += new System.EventHandler(this.LOKIpanel_MouseEnter);
-            this.LOKIpanel.MouseLeave += new System.EventHandler(this.LOKIpanel_MouseLeave);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2167,10 +2164,14 @@ namespace Ass1_EncryptSoftware
             this.Line1.ResumeLayout(false);
             this.Line1.PerformLayout();
             this.c.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.Blowpanel.ResumeLayout(false);
             this.Blowpanel.PerformLayout();
             this.AESpanel.ResumeLayout(false);
             this.AESpanel.PerformLayout();
+            this.LOKIpanel.ResumeLayout(false);
+            this.LOKIpanel.PerformLayout();
             this.RSApanel.ResumeLayout(false);
             this.RSApanel.PerformLayout();
             this.DESpanel.ResumeLayout(false);
@@ -2209,10 +2210,6 @@ namespace Ass1_EncryptSoftware
             this.panel5.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.LOKIpanel.ResumeLayout(false);
-            this.LOKIpanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2323,7 +2320,6 @@ namespace Ass1_EncryptSoftware
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox DeShowPassCheck;
-        private System.Windows.Forms.TextBox DePassText;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label14;
@@ -2362,6 +2358,7 @@ namespace Ass1_EncryptSoftware
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel LOKIpanel;
         private System.Windows.Forms.Label LokiText;
+        private System.Windows.Forms.TextBox DePassText;
     }
 }
 
